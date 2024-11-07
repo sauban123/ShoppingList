@@ -4,11 +4,13 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -31,6 +33,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.modifier.modifierLocalConsumer
@@ -56,7 +59,9 @@ fun ShoppingListApp(){
             onClick = {
                       showDialog = true
                       },
-            modifier = Modifier.align(Alignment.CenterHorizontally).padding(15.dp)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(15.dp)
 
         ) {
             Text(text = "Add Item")
@@ -158,31 +163,42 @@ fun ShippingItemEditor(item: ShoppingItem, onEditComplete:(String , Int) -> Unit
      var isEditing by remember{ mutableStateOf(item.isEditing) }
     Row(modifier = Modifier
         .fillMaxWidth()
-        .background(Color.Red)
+        .background(Color.LightGray)
         .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceEvenly
         )
     {
-        Column {
-            BasicTextField(
-                value = editName,
-                onValueChange = {editName = it},
-                singleLine = true,
+
+            Column(
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(8.dp)
-            )
-        }
-        Column {
-            BasicTextField(
-                value = editQuantity,
-                onValueChange = {editQuantity = it},
-                singleLine = true,
+                    .border(1.dp, Color.Black, shape = RoundedCornerShape(10.dp)) // Border with rounded corners
+                    .padding(5.dp) // Padding inside the column
+            ) {
+                BasicTextField(
+                    value = editName,
+                    onValueChange = {editName = it},
+                    singleLine = true,
+//                    modifier = Modifier
+//                        .wrapContentSize()
+//                        .padding(8.dp)
+                )
+            }
+
+            Column (
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(8.dp)
-            )
-        }
+                    .border(1.dp, Color.Black, shape = RoundedCornerShape(10.dp)) // Border with rounded corners
+                    .padding(5.dp) // Padding inside the column
+            ){
+                BasicTextField(
+                    value = editQuantity,
+                    onValueChange = {editQuantity = it},
+                    singleLine = true,
+//                    modifier = Modifier
+//                        .wrapContentSize()
+//                        .padding(8.dp)
+                )
+            }
+
         Button(onClick = {
             isEditing = false
             onEditComplete(editName , editQuantity.toIntOrNull()?:1)
